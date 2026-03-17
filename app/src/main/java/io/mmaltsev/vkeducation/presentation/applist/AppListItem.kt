@@ -29,6 +29,7 @@ import io.mmaltsev.vkeducation.domain.appdetails.Category
 fun AppListItem(
     app: App,
     onClick: () -> Unit,
+    onIconClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -44,7 +45,8 @@ fun AppListItem(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(56.dp)
-                .clip(RoundedCornerShape(12.dp)),
+                .clip(RoundedCornerShape(12.dp))
+                .clickable(onClick = onIconClick),
         )
 
         Spacer(modifier = Modifier.width(12.dp))
