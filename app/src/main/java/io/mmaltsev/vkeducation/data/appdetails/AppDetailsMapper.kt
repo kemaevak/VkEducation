@@ -11,8 +11,8 @@ class AppDetailsMapper @Inject constructor() {
         category = dto.category,
         ageRating = dto.ageRating,
         size = dto.size.toFloat(),
-        iconUrl = dto.icon,
-        screenshotUrlList = dto.screenshots,
+        iconUrl = dto.iconUrl,
+        screenshotUrlList = dto.screenshotUrlList,
         description = dto.description,
     )
 }

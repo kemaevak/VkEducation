@@ -64,6 +64,9 @@ fun AppDetailsScreen(
                 AppDetailsContent(
                     content = currentState,
                     onBackClick = onBackClick,
+                    onWishlistClick = {
+                        viewModel.toggleWishlist()
+                    },
                     onShareClick = {
                         viewModel.showUnderDevelopmentMessage()
                     },

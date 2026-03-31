@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.mmaltsev.vkeducation.domain.appdetails.AppDetailsRepository
 import io.mmaltsev.vkeducation.domain.appdetails.GetAppDetailsUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppDetailsViewModel @Inject constructor(
     private val getAppDetailsUseCase: GetAppDetailsUseCase,
+    private val appDetailsRepository: AppDetailsRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -31,6 +33,7 @@ class AppDetailsViewModel @Inject constructor(
 
     init {
         getAppDetails()
+        observeAppDetails()
     }
 
     fun showUnderDevelopmentMessage() {
@@ -49,18 +52,35 @@ class AppDetailsViewModel @Inject constructor(
         }
     }
 
+    fun toggleWishlist() {
+        viewModelScope.launch {
+            appDetailsRepository.toggleWishlist(appId)
+        }
+    }
+
     fun getAppDetails() {
         viewModelScope.launch {
             _state.value = AppDetailsState.Loading
-
-            getAppDetailsUseCase(appId).catch {
+            try {
+                getAppDetailsUseCase(appId).catch {
+                    _state.value = AppDetailsState.Error
+                }.collect {}
+            } catch (e: Exception) {
                 _state.value = AppDetailsState.Error
-            }.collect { appDetails ->
-                _state.value = AppDetailsState.Content(
-                    appDetails = appDetails,
-                    descriptionCollapsed = false
-                )
             }
+        }
+    }
+
+    private fun observeAppDetails() {
+        viewModelScope.launch {
+            appDetailsRepository.observeAppDetails(appId)
+                .catch { _state.value = AppDetailsState.Error }
+                .collect { appDetails ->
+                    _state.value = AppDetailsState.Content(
+                        appDetails = appDetails,
+                        descriptionCollapsed = false,
+                    )
+                }
         }
     }
 }
