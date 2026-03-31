@@ -1,8 +1,9 @@
 package io.mmaltsev.vkeducation.data.appdetails
 
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
+import javax.inject.Inject
 
-class AppDetailsMapper {
+class AppDetailsMapper @Inject constructor() {
     fun toDomain(dto: AppDetailsDto): AppDetails = AppDetails(
         id = dto.id,
         name = dto.name,
@@ -10,8 +11,8 @@ class AppDetailsMapper {
         category = dto.category,
         ageRating = dto.ageRating,
         size = dto.size.toFloat(),
-        iconUrl = dto.icon,
-        screenshotUrlList = dto.screenshots,
+        iconUrl = dto.iconUrl,
+        screenshotUrlList = dto.screenshotUrlList,
         description = dto.description,
     )
 }
