@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsScreen
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 @AndroidEntryPoint
@@ -18,7 +17,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             VkEducationTheme {
-                AppDetailsScreen()
+                AppNavigation(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .safeDrawingPadding(),
+                )
             }
         }
     }
