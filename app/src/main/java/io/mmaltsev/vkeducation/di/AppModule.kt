@@ -8,17 +8,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.mmaltsev.vkeducation.data.appdetails.AppApi
-import io.mmaltsev.vkeducation.data.appdetails.AppDetailsMapper
-import io.mmaltsev.vkeducation.data.appdetails.AppDetailsRepositoryImpl
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDatabase
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsDao
-import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsEntityMapper
-import io.mmaltsev.vkeducation.domain.appdetails.AppDetailsRepository
-import io.mmaltsev.vkeducation.domain.appdetails.GetAppDetailsUseCase
-import io.mmaltsev.vkeducation.data.applist.AppListMapper
-import io.mmaltsev.vkeducation.data.applist.AppListRepositoryImpl
-import io.mmaltsev.vkeducation.domain.applist.AppListRepository
-import io.mmaltsev.vkeducation.domain.applist.GetAppListUseCase
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -27,14 +18,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://185.103.109.134")
-            .addConverterFactory(Json{
-                ignoreUnknownKeys = true
-            }.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(
+                Json {
+                    ignoreUnknownKeys = true
+                }.asConverterFactory("application/json".toMediaType())
+            )
             .build()
     }
 
@@ -42,18 +36,6 @@ object AppModule {
     @Singleton
     fun provideAppApi(retrofit: Retrofit): AppApi {
         return retrofit.create(AppApi::class.java)
-    }
-
-//    @Provides
-//    @Singleton
-//    fun provideAppDetailsRepository(appApi: AppApi): AppDetailsRepository {
-//        return AppDetailsRepositoryImpl(appApi)
-//    }
-
-    @Provides
-    @Singleton
-    fun provideGetAppDetailsUseCase(repository: AppDetailsRepository): GetAppDetailsUseCase {
-        return GetAppDetailsUseCase(repository)
     }
 
     @Provides
@@ -70,46 +52,5 @@ object AppModule {
     @Singleton
     fun provideAppDetailsDao(database: AppDatabase): AppDetailsDao {
         return database.appDetailsDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppDetailsEntityMapper(): AppDetailsEntityMapper {
-        return AppDetailsEntityMapper()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppDetailsMapper(): AppDetailsMapper {
-        return AppDetailsMapper()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppDetailsRepository(
-        api: AppApi,
-        dao: AppDetailsDao,
-        mapper: AppDetailsMapper,
-        entityMapper: AppDetailsEntityMapper
-    ): AppDetailsRepository {
-        return AppDetailsRepositoryImpl(api, dao, mapper, entityMapper)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppListMapper(): AppListMapper {
-        return AppListMapper()
-    }
-
-    @Provides
-    @Singleton
-    fun provideAppListRepository(mapper: AppListMapper): AppListRepository {
-        return AppListRepositoryImpl(mapper)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetAppListUseCase(repository: AppListRepository): GetAppListUseCase {
-        return GetAppListUseCase(repository)
     }
 }

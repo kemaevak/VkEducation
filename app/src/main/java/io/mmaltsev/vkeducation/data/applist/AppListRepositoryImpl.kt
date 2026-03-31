@@ -2,8 +2,9 @@ package io.mmaltsev.vkeducation.data.applist
 
 import io.mmaltsev.vkeducation.domain.applist.AppListRepository
 import io.mmaltsev.vkeducation.domain.applist.AppSummary
+import javax.inject.Inject
 
-class AppListRepositoryImpl(
+class AppListRepositoryImpl @Inject constructor(
     private val mapper: AppListMapper,
 ) : AppListRepository {
 

@@ -3,8 +3,9 @@ package io.mmaltsev.vkeducation.data.applist
 import io.mmaltsev.vkeducation.domain.appdetails.Category
 import io.mmaltsev.vkeducation.domain.applist.AppSummary
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class AppListMapper {
+class AppListMapper @Inject constructor() {
 
     private val json = Json { ignoreUnknownKeys = true }
 
