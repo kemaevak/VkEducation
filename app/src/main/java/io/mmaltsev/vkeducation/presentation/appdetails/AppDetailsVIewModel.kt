@@ -1,6 +1,6 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
-import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,7 +10,6 @@ import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -19,7 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class AppDetailsViewModel @Inject constructor(
     private val getAppDetailsUseCase: GetAppDetailsUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private val appId: String = checkNotNull(savedStateHandle["appId"])
 
     private val _state = MutableStateFlow<AppDetailsState>(AppDetailsState.Loading)
     val state = _state.asStateFlow()
@@ -51,9 +53,8 @@ class AppDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = AppDetailsState.Loading
 
-            getAppDetailsUseCase("fa2e31b8-1234-4cf7-9914-108a170a1b01").catch { e ->
+            getAppDetailsUseCase(appId).catch {
                 _state.value = AppDetailsState.Error
-                Log.d("HOHOHO", "ERROR $e")
             }.collect { appDetails ->
                 _state.value = AppDetailsState.Content(
                     appDetails = appDetails,

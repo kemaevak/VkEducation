@@ -6,8 +6,7 @@ import kotlinx.serialization.Serializable
 data class AppSummaryDto(
     val id: String,
     val name: String,
-    val developer: String,
+    val description: String,
     val category: String,
-    val rating: Double,
     val iconUrl: String,
 )

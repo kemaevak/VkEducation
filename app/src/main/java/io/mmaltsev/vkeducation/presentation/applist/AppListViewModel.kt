@@ -17,7 +17,7 @@ class AppListViewModel @Inject constructor(
     private val getAppListUseCase: GetAppListUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<AppListState>(AppListState.Content(emptyList()))
+    private val _state = MutableStateFlow<AppListState>(AppListState.Loading)
     val state = _state.asStateFlow()
 
     private val _events = Channel<AppListEvent>(BUFFERED)
@@ -27,10 +27,15 @@ class AppListViewModel @Inject constructor(
         loadApps()
     }
 
-    private fun loadApps() {
+    fun loadApps() {
         viewModelScope.launch {
-            val apps = getAppListUseCase()
-            _state.value = AppListState.Content(apps)
+            _state.value = AppListState.Loading
+            try {
+                val apps = getAppListUseCase()
+                _state.value = AppListState.Content(apps)
+            } catch (e: Exception) {
+                _state.value = AppListState.Error
+            }
         }
     }
 
