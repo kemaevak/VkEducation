@@ -1,8 +1,8 @@
-package io.mmaltsev.vkeducation.presentation.applist
+package io.mmaltsev.vkeducation.domain.applist
 
 import io.mmaltsev.vkeducation.domain.appdetails.Category
 
-data class App(
+data class AppSummary(
     val id: String,
     val name: String,
     val developer: String,

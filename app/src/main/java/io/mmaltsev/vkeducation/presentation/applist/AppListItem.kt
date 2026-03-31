@@ -24,10 +24,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.mmaltsev.vkeducation.domain.appdetails.Category
+import io.mmaltsev.vkeducation.domain.applist.AppSummary
 
 @Composable
 fun AppListItem(
-    app: App,
+    app: AppSummary,
     onClick: () -> Unit,
     onIconClick: () -> Unit,
     modifier: Modifier = Modifier,
