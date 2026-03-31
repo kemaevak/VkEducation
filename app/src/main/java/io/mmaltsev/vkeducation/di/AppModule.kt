@@ -15,6 +15,10 @@ import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsDao
 import io.mmaltsev.vkeducation.data.appdetails.local.AppDetailsEntityMapper
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetailsRepository
 import io.mmaltsev.vkeducation.domain.appdetails.GetAppDetailsUseCase
+import io.mmaltsev.vkeducation.data.applist.AppListMapper
+import io.mmaltsev.vkeducation.data.applist.AppListRepositoryImpl
+import io.mmaltsev.vkeducation.domain.applist.AppListRepository
+import io.mmaltsev.vkeducation.domain.applist.GetAppListUseCase
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -89,5 +93,23 @@ object AppModule {
         entityMapper: AppDetailsEntityMapper
     ): AppDetailsRepository {
         return AppDetailsRepositoryImpl(api, dao, mapper, entityMapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppListMapper(): AppListMapper {
+        return AppListMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppListRepository(mapper: AppListMapper): AppListRepository {
+        return AppListRepositoryImpl(mapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAppListUseCase(repository: AppListRepository): GetAppListUseCase {
+        return GetAppListUseCase(repository)
     }
 }

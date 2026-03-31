@@ -1,6 +1,8 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +32,7 @@ fun AppDetailsContent(
     val appDetails = content.appDetails
     val descriptionCollapsed = content.descriptionCollapsed
 
-    Column(modifier) {
+    Column(modifier.verticalScroll(rememberScrollState())) {
         Toolbar(
             onBackClick = onBackClick,
             onShareClick = onShareClick,
