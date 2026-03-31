@@ -2,8 +2,9 @@ package io.mmaltsev.vkeducation.data.appdetails.local
 
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class AppDetailsEntityMapper {
+class AppDetailsEntityMapper @Inject constructor() {
 
     fun toEntity(domain: AppDetails): AppDetailsEntity = AppDetailsEntity(
         id = domain.id,
@@ -14,7 +15,8 @@ class AppDetailsEntityMapper {
         size = domain.size,
         iconUrl = domain.iconUrl,
         screenshots = null,
-        description = domain.description
+        description = domain.description,
+        isInWishlist = domain.isInWishlist,
     )
 
     fun toDomain(entity: AppDetailsEntity): AppDetails = AppDetails(
@@ -26,6 +28,7 @@ class AppDetailsEntityMapper {
         size = entity.size,
         iconUrl = entity.iconUrl,
         screenshotUrlList = null,
-        description = entity.description
+        description = entity.description,
+        isInWishlist = entity.isInWishlist,
     )
 }

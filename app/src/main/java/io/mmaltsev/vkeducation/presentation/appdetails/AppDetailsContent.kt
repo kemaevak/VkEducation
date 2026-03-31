@@ -1,6 +1,8 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.mmaltsev.vkeducation.domain.appdetails.AppDetails
-import io.mmaltsev.vkeducation.domain.appdetails.Category
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 @Composable
 fun AppDetailsContent(
     content: AppDetailsState.Content,
     onBackClick: () -> Unit,
+    onWishlistClick: () -> Unit,
     onShareClick: () -> Unit,
     onInstallClick: () -> Unit,
     onReadMoreClick: () -> Unit,
@@ -30,10 +32,12 @@ fun AppDetailsContent(
     val appDetails = content.appDetails
     val descriptionCollapsed = content.descriptionCollapsed
 
-    Column(modifier) {
+    Column(modifier.verticalScroll(rememberScrollState())) {
         Toolbar(
             onBackClick = onBackClick,
+            onWishlistClick = onWishlistClick,
             onShareClick = onShareClick,
+            isInWishlist = appDetails.isInWishlist,
         )
         Spacer(Modifier.height(8.dp))
         AppDetailsHeader(
@@ -87,7 +91,7 @@ private fun Preview() {
                     id = "fa2e31b8-1234-4cf7-9914-108a170a1b01",
                     name = "Гильдия Героев: Экшен ММО РПГ",
                     developer = "VK Play",
-                    category = Category.GAME,
+                    category = "Игры",
                     ageRating = 12,
                     size = 223.7f,
                     screenshotUrlList = listOf(
@@ -103,6 +107,7 @@ private fun Preview() {
             ),
             onReadMoreClick = {},
             onBackClick = {},
+            onWishlistClick = {},
             onShareClick = {},
             onInstallClick = {},
             onDeveloperClick = {},
